@@ -1,0 +1,96 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package interfaz;
+import java.util.ArrayList;
+import java.util.Scanner;
+import mundo.Balotera;
+import mundo.Carton;
+import mundo.Jugador;
+
+/**
+ *
+ * @author USUARIO
+ */
+public class Bingo {
+    private ArrayList<Jugador> jugadores;
+    private Balotera balotera;
+    
+    
+    public Bingo(){
+        jugadores = new ArrayList();
+        balotera = new Balotera();
+    }
+    
+    public static void main (String[] args){
+        Bingo juego = new Bingo();
+        Scanner in = new Scanner(System.in);
+        int contador=0;
+        int opcion;
+        
+        while(true){
+            System.out.print("Seleccione una opción: \n"+
+                "1. Ingresar un jugador\n"+
+                "2. Imprimir jugadores\n"+
+                "3. Iniciar el juego\n"+
+                "4. Salir\n"+
+                "opción :");
+            opcion = in.nextInt();
+            in.nextLine();
+        
+            switch(opcion){
+                case 1:
+                    System.out.println("Ingrese el nombre del jugador");
+                    juego.crearJugador(in.nextLine(), new Carton(++contador));
+                    break;
+                case 2:                    
+                    System.out.println("Actualmente tenemos " + contador + " jugadores inscritos\n");
+                    for(Jugador jugador : juego.jugadores)
+                        System.out.println(jugador);
+                    break;
+                case 3:
+                    if(contador > 0){
+                        System.out.println("JUGANDO...");
+                        System.out.println(juego);                            
+                        juego.jugar();
+                    }
+                    else{
+                        System.out.println("Aún no hay jugadores para iniciar el juego.\n"
+                                         + " Por favor incriba por lo menos un jugador.");
+                    }
+                    break;
+                case 4:
+                    System.out.println("¡Gracias por jugar!");
+                    System.exit(0);
+                default:
+                    System.out.println("Opción no valida...");
+            }        
+        }
+    }
+    
+    public void crearJugador(String nombre, Carton carton){
+        jugadores.add(new Jugador(nombre, carton));
+    }
+    
+    public void jugar(){
+        
+    }
+    
+    public Jugador buscarGanador(){
+        for(Jugador jugador : jugadores)
+            if(jugador.getCARTON().esGanador())
+                return jugador;
+        return null;
+    }
+    
+    @Override
+    public String toString(){
+        String salida = "***BIENVENIDOS AL BINGO UPC***\n";
+        salida += balotera + " \n";
+        for(Jugador j : jugadores)
+            salida += j + "\n";
+        return salida;
+    }
+}
